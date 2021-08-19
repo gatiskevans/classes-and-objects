@@ -24,7 +24,7 @@
             return $this->mother !== "" ? $this->mother : "Unknown";
         }
 
-        function hasSameMotherAs($dog): bool {
+        function hasSameMotherAs(string $dog): bool {
             return $this->mother === $dog;
         }
 
