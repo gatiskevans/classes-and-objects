@@ -2,6 +2,12 @@
 
     class Application
     {
+        public VideoStore $store;
+
+        function __construct(VideoStore $store){
+            $this->store = $store;
+        }
+
         function run() {
             while (true) {
                 echo "Choose the operation you want to perform \n";
@@ -37,6 +43,8 @@
 
         private function add_movies() {
             //todo
+            $movie = readline("Enter the movie to add to the list: ");
+            $this->store->addVideo($movie);
         }
 
         private function rent_video() {
@@ -53,14 +61,50 @@
     }
 
     class VideoStore {
+        public array $movies = [];
+        public Video $video;
+
+        function __construct(Video $video){
+            $this->video = $video;
+        }
+
+        function addVideo($title){
+            array_push($this->movies, $title);
+            var_dump($this->movies);
+        }
+
+        function checkoutByTitle($title){
+
+        }
 
     }
 
     class Video {
         public string $title;
-        public bool $checked;
+        public bool $checkout;
         public int $averageRating;
+
+        function __construct(string $title, bool $checkout, int $averageRating){
+            $this->title = $title;
+            $this->checkout = $checkout;
+            $this->averageRating = $averageRating;
+        }
+
+        function checkOut(): bool {
+            return $this->checkout = true;
+        }
+
+        function returnVideo(): bool {
+            return $this->checkout = false;
+        }
+
+        function receiveRating(){
+
+        }
     }
 
-    $app = new Application();
+    $newVideo = new Video("The Matrix", false, 5);
+    $newStore = new VideoStore($newVideo);
+
+    $app = new Application($newStore);
     $app->run();
