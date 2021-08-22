@@ -49,6 +49,9 @@
 
         private function rent_video() {
             //todo
+            echo $this->store->checkoutByTitle();
+            $movie = readline("Choose a movie to rent: ");
+
         }
 
         private function return_video() {
@@ -69,12 +72,18 @@
         }
 
         function addVideo($title){
+            $title = new Video($title, false);
             array_push($this->movies, $title);
             var_dump($this->movies);
         }
 
-        function checkoutByTitle($title){
-
+        function checkoutByTitle(): string {
+            $listOfMovies = '';
+            foreach($this->movies as $index => $movie){
+                  $checkout = $movie->checkout ? "Available: No" : "Available: Yes";
+                  $listOfMovies .= "$index | $movie->title $checkout\n";
+            }
+            return $listOfMovies;
         }
 
     }
@@ -84,10 +93,9 @@
         public bool $checkout;
         public int $averageRating;
 
-        function __construct(string $title, bool $checkout, int $averageRating){
+        function __construct(string $title, bool $checkout){
             $this->title = $title;
             $this->checkout = $checkout;
-            $this->averageRating = $averageRating;
         }
 
         function checkOut(): bool {
@@ -103,7 +111,7 @@
         }
     }
 
-    $newVideo = new Video("The Matrix", false, 5);
+    $newVideo = new Video("The Matrix", false);
     $newStore = new VideoStore($newVideo);
 
     $app = new Application($newStore);
