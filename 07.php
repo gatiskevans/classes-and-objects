@@ -1,30 +1,34 @@
 <?php
 
     class Dog {
-        public string $name;
+        private string $name;
         public string $sex;
-        public string $mother = "";
-        public string $father = "";
+        private string $mother = "";
+        private string $father = "";
 
-        function __construct(string $name, string $sex){
+        public function __construct(string $name, string $sex){
             $this->name = $name;
             $this->sex = $sex;
         }
 
-        function setMotherAndFather(string $mother, string $father){
+        public function getName(): string {
+            return $this->name;
+        }
+
+        public function setMotherAndFather(string $mother, string $father){
             $this->mother = $mother;
             $this->father = $father;
         }
 
-        function fathersName(): string {
+        public function fathersName(): string {
             return $this->father !== "" ? $this->father : "Unknown";
         }
 
-        function mothersName(): string {
+        public function mothersName(): string {
             return $this->mother !== "" ? $this->mother : "Unknown";
         }
 
-        function hasSameMotherAs(string $dog): bool {
+        public function hasSameMotherAs(string $dog): bool {
             return $this->mother === $dog;
         }
 
@@ -46,8 +50,8 @@
             $rocky->setMotherAndFather("Molly", "Sam");
             $buster->setMotherAndFather("Lady", "Sparky");
 
-            return "{$coco->name}`s father`s name is {$coco->fathersName()}.\n".
-            "{$sparky->name}`s father`s name is {$sparky->fathersName()}.\n".
+            return "{$coco->getName()}`s father`s name is {$coco->fathersName()}.\n".
+            "{$sparky->getName()}`s father`s name is {$sparky->fathersName()}.\n".
             "{$coco->hasSameMotherAs($rocky->mothersName())}";
         }
     }

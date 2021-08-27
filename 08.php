@@ -1,34 +1,50 @@
 <?php
 
     class SavingsAccount {
-        public float $annualInterestRate;
-        public int $balance = 0;
-        public int $deposit = 0;
-        public int $withdraw = 0;
-        public int $interestEarned = 0;
+        private float $annualInterestRate;
+        private int $balance;
+        private int $deposit = 0;
+        private int $withdraw = 0;
+        private int $interestEarned = 0;
 
-        function __construct(float $balance, float $annualInterestRate){
+        public function __construct(float $balance, float $annualInterestRate){
             $this->balance = ceil($balance * 100);
             $this->annualInterestRate = $annualInterestRate / 100;
         }
 
-        function withdraw(float $amount): int {
+        public function getBalance(): int {
+            return $this->balance;
+        }
+
+        public function getDeposit(): int {
+            return $this->deposit;
+        }
+
+        public function getWithdraw(): int {
+            return $this->withdraw;
+        }
+
+        public function getInterestEarned(): int {
+            return $this->interestEarned;
+        }
+
+        public function withdraw(float $amount): int {
             $amount = ceil($amount * 100);
             $this->withdraw += $amount;
             return $this->balance = $this->balance - $amount;
         }
 
-        function deposit(float $amount): int {
+        public function deposit(float $amount): int {
             $amount = ceil($amount * 100);
             $this->deposit += $amount;
             return $this->balance = $this->balance + $amount;
         }
 
-        function monthlyInterest(): float {
+        public function monthlyInterest(): float {
             return number_format($this->annualInterestRate / 12, 4);
         }
 
-        function addInterest(): float {
+        public function addInterest(): float {
             $this->interestEarned += ceil($this->monthlyInterest() * $this->balance);
             return $this->balance = ceil($this->monthlyInterest() * $this->balance + $this->balance);
         }
@@ -49,10 +65,10 @@
         $account->withdraw($withdraw);
     }
 
-    $totalDeposit = number_format($account->deposit/100, 2);
-    $totalWithdraw = number_format($account->withdraw/100, 2);
-    $interestEarned = number_format($account->interestEarned/100, 2);
-    $accountBalance = number_format($account->balance/100, 2);
+    $totalDeposit = number_format($account->getDeposit()/100, 2);
+    $totalWithdraw = number_format($account->getWithdraw()/100, 2);
+    $interestEarned = number_format($account->getInterestEarned()/100, 2);
+    $accountBalance = number_format($account->getBalance()/100, 2);
 
     echo "Total deposited: $$totalDeposit\n";
     echo "Total withdrew: $$totalWithdraw\n";

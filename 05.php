@@ -5,37 +5,37 @@
         private int $day;
         private int $year;
 
-        function __construct(int $month, int $day, int $year){
+        public function __construct(int $month, int $day, int $year){
             $this->month = $month;
             $this->day = $day;
             $this->year = $year;
         }
 
-        function getMonth(): int {
+        public function getMonth(): int {
             return $this->month;
         }
 
-        function getDay(): int {
+        public function getDay(): int {
             return $this->day;
         }
 
-        function getYear(): int{
+        public function getYear(): int{
             return $this->year;
         }
 
-        function setMonth($month){
+        public function setMonth($month){
             $this->month = $month;
         }
 
-        function setDay($day){
+        public function setDay($day){
             $this->day = $day;
         }
 
-        function setYear($year){
+        public function setYear($year){
             $this->year = $year;
         }
 
-        function displayDate(): string {
+        public function displayDate(): string {
             return "$this->month/$this->day/$this->year";
         }
 

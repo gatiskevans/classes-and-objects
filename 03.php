@@ -1,10 +1,14 @@
 <?php
 
     class FuelGauge {
-        public int $fuel = 0;
-        public int $maxFuel = 70;
+        private int $fuel = 0;
+        private int $maxFuel = 70;
 
-        function addFuel(): int {
+        public function getMaxFuel(): int {
+            return $this->maxFuel;
+        }
+
+        public function addFuel(): int {
             return $this->fuel++;
         }
 
@@ -18,21 +22,21 @@
     }
 
     class Odometer {
-        public int $mileage;
-        public int $maxMileage = 999999;
-        public int $driven = 0;
-        public FuelGauge $fuel;
+        private int $mileage;
+        private int $maxMileage = 999999;
+        private int $driven = 0;
+        private FuelGauge $fuel;
 
-        function __construct(int $mileage, FuelGauge $fuel){
+        public function __construct(int $mileage, FuelGauge $fuel){
             $this->mileage = $mileage;
             $this->fuel = $fuel;
         }
 
-        function getMileage(): int {
+        public function getMileage(): int {
             return $this->mileage;
         }
 
-        function addMileage() {
+        public function addMileage() {
             if($this->mileage < $this->maxMileage){
                 $this->mileage++;
             } else {
@@ -51,7 +55,7 @@
     $fuel = new FuelGauge();
     $mileage = new Odometer(100000, $fuel);
 
-    for($i = 1; $i <= $fuel->maxFuel; $i++){
+    for($i = 1; $i <= $fuel->getMaxFuel(); $i++){
         $fuel->addFuel();
     }
 

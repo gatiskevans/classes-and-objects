@@ -5,7 +5,7 @@
         public int $x;
         public int $y;
 
-        function __construct($pointOne, $pointTwo){
+        public function __construct(int $pointOne, int $pointTwo){
             $this->x = $pointOne;
             $this->y = $pointTwo;
         }

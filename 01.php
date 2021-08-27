@@ -2,25 +2,29 @@
 
     class Product {
 
-        public string $name;
-        public float $price_at_start;
-        public int $amount_at_start;
+        private string $name;
+        private float $price_at_start;
+        private int $amount_at_start;
 
-        function __construct(string $name, float $price_at_start, int $amount_at_start){
+        public function __construct(string $name, float $price_at_start, int $amount_at_start){
             $this->name = $name;
             $this->price_at_start = number_format($price_at_start, 2);
             $this->amount_at_start = $amount_at_start;
         }
 
-        function print_product(): string {
+        public function getName(): string {
+            return $this->name;
+        }
+
+        public function print_product(): string {
             return "\"$this->name\", price $this->price_at_start EUR, amount $this->amount_at_start units\n";
         }
 
-        function changeQuantity($input){
+        public function changeQuantity($input){
             $this->amount_at_start = $input;
         }
 
-        function changePrice($input){
+        public function changePrice($input){
             $this->price_at_start = $input;
         }
 
@@ -37,21 +41,21 @@
     $selection = readline("Choose a product (1-3): ");
     switch($selection){
         case 1:
-            echo "Product \"$mouse->name\"\n";
+            echo "Product \"{$mouse->getName()}\"\n";
             $input = readline("Change the amount: ");
             $mouse->changeQuantity($input);
             $input = readline("Change the price: ");
             $mouse->changePrice($input);
             break;
         case 2:
-            echo "Product \"$phone->name\"\n";
+            echo "Product \"{$phone->getName()}\"\n";
             $input = readline("Change the amount: ");
             $phone->changeQuantity($input);
             $input = readline("Change the price: ");
             $phone->changePrice($input);
             break;
         case 3:
-            echo "Product \"$projector->name\"\n";
+            echo "Product \"{$projector->getName()}\"\n";
             $input = readline("Change the amount: ");
             $projector->changeQuantity($input);
             $input = readline("Change the price: ");

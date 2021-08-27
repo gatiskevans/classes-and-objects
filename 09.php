@@ -2,15 +2,15 @@
 
     class BankAccount {
 
-        public string $name;
-        public float $balance;
+        private string $name;
+        private float $balance;
 
-        function __construct(string $name, float $balance){
+        public function __construct(string $name, float $balance){
             $this->name = $name;
             $this->balance = $balance;
         }
 
-        function show_user_name_and_balance(): string {
+        public function show_user_name_and_balance(): string {
             $balance = number_format(abs($this->balance), 2);
             return $this->balance < 0 ? "$this->name, -$$balance" : "$this->name, $$balance";
         }
