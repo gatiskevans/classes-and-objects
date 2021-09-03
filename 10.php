@@ -4,11 +4,11 @@
     {
         public VideoStore $store;
 
-        function __construct(VideoStore $store){
+        public function __construct(VideoStore $store){
             $this->store = $store;
         }
 
-        function run() {
+        public function run(): void {
             while (true) {
                 echo "Choose the operation you want to perform \n";
                 echo "Choose 0 for EXIT\n";
@@ -41,49 +41,87 @@
             }
         }
 
-        private function add_movies() {
+        private function add_movies(): void {
             //todo
             $movie = readline("Enter the movie to add to the list: ");
-            $this->store->addVideo($movie);
+            if(trim($movie) !== "") $this->store->addVideo($movie);
         }
 
-        private function rent_video() {
+        private function rent_video(): void {
             //todo
-            echo $this->store->checkoutByTitle();
+            echo $this->store->listInventory();
             $movie = readline("Choose a movie to rent: ");
-
+            if(is_numeric($movie)) $this->store->checkoutByTitle($movie);
         }
 
-        private function return_video() {
+        private function return_video(): void {
             //todo
+            echo $this->store->listInventory();
+            $movie = readline("Choose a movie to return: ");
+            if(is_numeric($movie)) $this->store->returnVideo($movie);
         }
 
-        private function list_inventory() {
+        private function list_inventory(): void {
             //todo
+            echo $this->store->listInventory();
+            $prompt = readline("Choose a movie to leave the rating. ");
+            switch($prompt){
+                case "":
+                    break;
+                case $prompt < count($this->store->movies):
+                    $this->store->leaveRating($prompt);
+                    break;
+            }
         }
     }
 
     class VideoStore {
         public array $movies = [];
-        public Video $video;
 
-        function __construct(Video $video){
-            $this->video = $video;
+        public function __construct(Video $video){
+            $this->movies[] = $video;
         }
 
-        function addVideo($title){
-            $title = new Video($title, false);
-            array_push($this->movies, $title);
-            var_dump($this->movies);
+        public function addVideo(string $title): void {
+            $this->movies[] = new Video($title, false);
         }
 
-        function checkoutByTitle(): string {
+        public function checkoutByTitle(int $titleIndex): void {
+            foreach($this->movies as $index => $movie){
+                if($movie->checkout === true && $index === $titleIndex) {
+                    echo "You cannot rent this movie. It's already taken\n";
+                } else if ($index === $titleIndex) $movie->checkout();
+            }
+        }
+
+        public function returnVideo(int $titleIndex): void {
+            foreach($this->movies as $index => $movie){
+                if($movie->checkout === false && $index === $titleIndex){
+                    echo "This movie is already in the store!\n";
+                } else if($index === $titleIndex) $movie->returnVideo();
+            }
+        }
+
+        public function listInventory(): string {
             $listOfMovies = '';
             foreach($this->movies as $index => $movie){
-                  $checkout = $movie->checkout ? "Available: No" : "Available: Yes";
-                  $listOfMovies .= "$index | $movie->title $checkout\n";
+                var_dump($movie->checkout);
+                $movie->checkout ? $checkout = "Available: \e[31mNo\e[0m" : $checkout = "Available: \e[32mYes\e[0m";
+                $listOfMovies .= "$index | \e[32m$movie->title\e[0m $checkout Rating: {$movie->getAverageRatings()} ";
+                $listOfMovies .= "Positive ratings: {$movie->positiveRatings()}\n";
             }
             return $listOfMovies;
+        }
+
+        public function leaveRating(int $movieIndex): void {
+            echo "Movie title: {$this->movies[$movieIndex]->title}\n";
+            echo "Average rating: {$this->movies[$movieIndex]->getAverageRatings()}\n";
+            $rating = readline("Leave a rating for this movie (1-10): ");
+            if($rating > 10 || $rating < 0) {
+                echo "You cannot leave such a rating";
+            } else {
+                $this->movies[$movieIndex]->receiveRating($rating);
+            }
         }
 
     }
@@ -91,28 +129,43 @@
     class Video {
         public string $title;
         public bool $checkout;
-        public int $averageRating;
+        public array $averageRatings = [];
 
-        function __construct(string $title, bool $checkout){
+        public function __construct(string $title, bool $checkout){
             $this->title = $title;
             $this->checkout = $checkout;
         }
 
-        function checkOut(): bool {
+        public function checkOut(): bool {
             return $this->checkout = true;
         }
 
-        function returnVideo(): bool {
+        public function returnVideo(): bool {
             return $this->checkout = false;
         }
 
-        function receiveRating(){
+        public function receiveRating(int $input): void {
+            $this->averageRatings[] = $input;
+        }
 
+        public function positiveRatings(): string {
+            if(!$this->averageRatings) return "\e[33mNo Rating\e[0m";
+            $percents = number_format(array_sum($this->averageRatings)*10 / count($this->averageRatings), 2);
+            if($percents > 50) return "\e[32m$percents%\e[0m";
+            return "\e[31m$percents%\e[0m";
+        }
+
+        public function getAverageRatings(): int {
+            if(!$this->averageRatings) return 0;
+            return array_sum($this->averageRatings) / count($this->averageRatings);
         }
     }
 
     $newVideo = new Video("The Matrix", false);
     $newStore = new VideoStore($newVideo);
+
+    $newStore->addVideo("Godfather II");
+    $newStore->addVideo("Star Wars Episode IV: A New Hope");
 
     $app = new Application($newStore);
     $app->run();
