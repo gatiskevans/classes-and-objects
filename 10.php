@@ -36,7 +36,7 @@
                         $this->list_inventory();
                         break;
                     default:
-                        echo "Sorry, I don't understand you..";
+                        echo "Sorry, I don't understand you..\n";
                 }
             }
         }
@@ -114,7 +114,7 @@
             echo "Average rating: {$this->movies[$movieIndex]->getAverageRatings()}\n";
             $rating = readline("Leave a rating for this movie (0-10): ");
             if($rating > 10 || $rating < 0) {
-                echo "You cannot leave such a rating";
+                echo "You cannot leave such a rating\n";
             } else {
                 $this->movies[$movieIndex]->receiveRating($rating);
             }
