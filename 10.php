@@ -42,27 +42,23 @@
         }
 
         private function add_movies(): void {
-            //todo
             $movie = readline("Enter the movie to add to the list: ");
             if(trim($movie) !== "") $this->store->addVideo($movie);
         }
 
         private function rent_video(): void {
-            //todo
             echo $this->store->listInventory();
             $movie = readline("Choose a movie to rent: ");
             if(is_numeric($movie)) $this->store->checkoutByTitle($movie);
         }
 
         private function return_video(): void {
-            //todo
             echo $this->store->listInventory();
             $movie = readline("Choose a movie to return: ");
             if(is_numeric($movie)) $this->store->returnVideo($movie);
         }
 
         private function list_inventory(): void {
-            //todo
             echo $this->store->listInventory();
             $prompt = readline("Choose a movie to leave the rating. ");
             switch($prompt){
