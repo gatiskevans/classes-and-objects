@@ -62,10 +62,11 @@
             echo $this->store->listInventory();
             $prompt = readline("Choose a movie to leave the rating. ");
             switch($prompt){
-                case "":
-                    break;
+                case 0:
                 case $prompt < count($this->store->movies):
                     $this->store->leaveRating($prompt);
+                    break;
+                default:
                     break;
             }
         }
@@ -101,7 +102,6 @@
         public function listInventory(): string {
             $listOfMovies = '';
             foreach($this->movies as $index => $movie){
-                var_dump($movie->checkout);
                 $movie->checkout ? $checkout = "Available: \e[31mNo\e[0m" : $checkout = "Available: \e[32mYes\e[0m";
                 $listOfMovies .= "$index | \e[32m$movie->title\e[0m $checkout Rating: {$movie->getAverageRatings()} ";
                 $listOfMovies .= "Positive ratings: {$movie->positiveRatings()}\n";
@@ -112,7 +112,7 @@
         public function leaveRating(int $movieIndex): void {
             echo "Movie title: {$this->movies[$movieIndex]->title}\n";
             echo "Average rating: {$this->movies[$movieIndex]->getAverageRatings()}\n";
-            $rating = readline("Leave a rating for this movie (1-10): ");
+            $rating = readline("Leave a rating for this movie (0-10): ");
             if($rating > 10 || $rating < 0) {
                 echo "You cannot leave such a rating";
             } else {
