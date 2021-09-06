@@ -36,18 +36,11 @@
             return $this->mileage;
         }
 
-        public function addMileage() {
-            if($this->mileage < $this->maxMileage){
-                $this->mileage++;
-            } else {
-                $this->mileage = 0;
-            }
+        public function addMileage(): void {
+            $this->mileage < $this->maxMileage ? $this->mileage++ : $this->mileage = 0;
 
             $this->driven++;
-            if($this->driven % 10 === 0){
-                $this->fuel->burnFuel();
-            }
-
+            if($this->driven % 10 === 0) $this->fuel->burnFuel();
         }
 
     }
@@ -57,13 +50,19 @@
 
     for($i = 1; $i <= $fuel->getMaxFuel(); $i++){
         $fuel->addFuel();
+        echo "Adding fuel: {$fuel->getFuel()}\n";
+        usleep(25000);
     }
+
+    echo "\e[32mGetting ready to drive!\e[0m\n";
+    sleep(2);
 
     while($fuel->getFuel() > 0){
         $mileage->addMileage();
         echo "Mileage: {$mileage->getMileage()}\n";
         echo "Fuel Level: {$fuel->getFuel()} liters\n";
         echo "--------------------------------\n";
+        usleep(500);
     }
 
 
