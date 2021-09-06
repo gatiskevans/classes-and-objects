@@ -38,7 +38,6 @@
 
         public function addMileage(): void {
             $this->mileage < $this->maxMileage ? $this->mileage++ : $this->mileage = 0;
-
             $this->driven++;
             if($this->driven % 10 === 0) $this->fuel->burnFuel();
         }

@@ -24,7 +24,7 @@
             $this->amount = $input;
         }
 
-        public function setPrice(int $input): void {
+        public function setPrice(float $input): void {
             $this->startPrice = $input;
         }
 

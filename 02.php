@@ -12,7 +12,7 @@
 
     }
 
-    function swap_points($x, $y){
+    function swap_points(object $x,object $y): void{
         $tempX = $x->x;
         $tempY = $x->y;
         $x->x = $y->x;
