@@ -20,11 +20,11 @@
             return "\"$this->name\", price $this->startPrice EUR, amount $this->amount units\n";
         }
 
-        public function setAmount($input): void{
+        public function setAmount(int $input): void{
             $this->amount = $input;
         }
 
-        public function setPrice($input): void {
+        public function setPrice(int $input): void {
             $this->startPrice = $input;
         }
 
