@@ -3,29 +3,29 @@
     class Product {
 
         private string $name;
-        private float $price_at_start;
-        private int $amount_at_start;
+        private float $startPrice;
+        private int $amount;
 
-        public function __construct(string $name, float $price_at_start, int $amount_at_start){
+        public function __construct(string $name, float $priceStart, int $amount){
             $this->name = $name;
-            $this->price_at_start = number_format($price_at_start, 2);
-            $this->amount_at_start = $amount_at_start;
+            $this->startPrice = number_format($priceStart, 2);
+            $this->amount = $amount;
         }
 
         public function getName(): string {
             return $this->name;
         }
 
-        public function print_product(): string {
-            return "\"$this->name\", price $this->price_at_start EUR, amount $this->amount_at_start units\n";
+        public function getProduct(): string {
+            return "\"$this->name\", price $this->startPrice EUR, amount $this->amount units\n";
         }
 
-        public function changeQuantity($input){
-            $this->amount_at_start = $input;
+        public function setAmount($input): void{
+            $this->amount = $input;
         }
 
-        public function changePrice($input){
-            $this->price_at_start = $input;
+        public function setPrice($input): void {
+            $this->startPrice = $input;
         }
 
     }
@@ -36,34 +36,32 @@
 
     $products = [$mouse, $phone, $projector];
 
-    echo "1 | {$mouse->print_product()}2 | {$phone->print_product()}3 | {$projector->print_product()}";
+    echo "1 | {$mouse->getProduct()}2 | {$phone->getProduct()}3 | {$projector->getProduct()}";
+
+    function setAmountAndPrice(object $product){
+        $input = readline("Change the amount: ");
+        $product->setAmount($input);
+        $input = readline("Change the price: ");
+        $product->setPrice($input);
+    }
 
     $selection = readline("Choose a product (1-3): ");
     switch($selection){
         case 1:
             echo "Product \"{$mouse->getName()}\"\n";
-            $input = readline("Change the amount: ");
-            $mouse->changeQuantity($input);
-            $input = readline("Change the price: ");
-            $mouse->changePrice($input);
+            setAmountAndPrice($mouse);
             break;
         case 2:
             echo "Product \"{$phone->getName()}\"\n";
-            $input = readline("Change the amount: ");
-            $phone->changeQuantity($input);
-            $input = readline("Change the price: ");
-            $phone->changePrice($input);
+            setAmountAndPrice($phone);
             break;
         case 3:
             echo "Product \"{$projector->getName()}\"\n";
-            $input = readline("Change the amount: ");
-            $projector->changeQuantity($input);
-            $input = readline("Change the price: ");
-            $projector->changePrice($input);
+            setAmountAndPrice($projector);
             break;
         default:
             die("Bye");
     }
 
-    echo "1 | {$mouse->print_product()}2 | {$phone->print_product()}3 | {$projector->print_product()}";
+    echo "1 | {$mouse->getProduct()}2 | {$phone->getProduct()}3 | {$projector->getProduct()}";
 
