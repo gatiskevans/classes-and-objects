@@ -23,15 +23,15 @@
             return $this->year;
         }
 
-        public function setMonth($month){
+        public function setMonth($month): void {
             $this->month = $month;
         }
 
-        public function setDay($day){
+        public function setDay($day): void {
             $this->day = $day;
         }
 
-        public function setYear($year){
+        public function setYear($year): void {
             $this->year = $year;
         }
 

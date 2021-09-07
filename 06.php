@@ -2,15 +2,23 @@
 
     class Survey {
         private int $surveyed = 12467;
-        private float $purchased_energy_drinks = 0.14;
-        private float $prefer_citrus_drinks = 0.64;
+        private float $purchasedEnergyDrinks = 0.14;
+        private float $preferCitrusDrinks = 0.64;
 
-        public function calculate_energy_drinkers(): int {
-            return $this->surveyed * $this->purchased_energy_drinks;
+        public function getPurchasedEnergyDrinks(): float {
+            return $this->purchasedEnergyDrinks;
         }
 
-        public function calculate_prefer_citrus(): int {
-            return $this->calculate_energy_drinkers() * $this->prefer_citrus_drinks;
+        public function getPreferCitrusDrinks(): float {
+            return $this->preferCitrusDrinks;
+        }
+
+        public function calculateEnergyDrinkers(): int {
+            return $this->surveyed * $this->getPurchasedEnergyDrinks();
+        }
+
+        public function calculatePreferCitrus(): int {
+            return $this->calculateEnergyDrinkers() * $this->getPreferCitrusDrinks();
         }
 
         public function getSurveyed(): int {
@@ -21,5 +29,5 @@
     $energyDrinksSurvey = new Survey();
 
     echo "Total number of people surveyed: " . $energyDrinksSurvey->getSurveyed() . "\n";
-    echo "Approximately " . $energyDrinksSurvey->calculate_energy_drinkers() . " bought at least one energy drink\n";
-    echo $energyDrinksSurvey->calculate_prefer_citrus() . " of those " . "prefer citrus flavored energy drinks.";
+    echo "Approximately " . $energyDrinksSurvey->calculateEnergyDrinkers() . " bought at least one energy drink\n";
+    echo $energyDrinksSurvey->calculatePreferCitrus() . " of those " . "prefer citrus flavored energy drinks.";

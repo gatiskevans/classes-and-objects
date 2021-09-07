@@ -2,30 +2,36 @@
 
     class Dog {
         private string $name;
-        public string $sex;
-        private string $mother = "";
-        private string $father = "";
+        private string $sex;
+        private string $mother;
+        private string $father;
 
-        public function __construct(string $name, string $sex){
+        public function __construct(string $name, string $sex, string $mother = "Unknown", string $father = "Unknown"){
             $this->name = $name;
             $this->sex = $sex;
+            $this->mother = $mother;
+            $this->father = $father;
         }
 
         public function getName(): string {
             return $this->name;
         }
 
-        public function setMotherAndFather(string $mother, string $father){
+        public function getSex(): string {
+            return $this->sex;
+        }
+
+        public function setMotherAndFather(string $mother, string $father): void {
             $this->mother = $mother;
             $this->father = $father;
         }
 
-        public function fathersName(): string {
-            return $this->father !== "" ? $this->father : "Unknown";
+        public function getFathersName(): string {
+            return $this->father !== "Unknown" ? $this->father : "Unknown";
         }
 
-        public function mothersName(): string {
-            return $this->mother !== "" ? $this->mother : "Unknown";
+        public function getMothersName(): string {
+            return $this->mother !== "Unknown" ? $this->mother : "Unknown";
         }
 
         public function hasSameMotherAs(string $dog): bool {
@@ -50,9 +56,9 @@
             $rocky->setMotherAndFather("Molly", "Sam");
             $buster->setMotherAndFather("Lady", "Sparky");
 
-            return "{$coco->getName()}`s father`s name is {$coco->fathersName()}.\n".
-            "{$sparky->getName()}`s father`s name is {$sparky->fathersName()}.\n".
-            "{$coco->hasSameMotherAs($rocky->mothersName())}";
+            return "{$coco->getName()}`s father`s name is {$coco->getFathersName()}.\n".
+            "{$sparky->getName()}`s father`s name is {$sparky->getFathersName()}.\n".
+            "{$coco->hasSameMotherAs($rocky->getMothersName())}";
         }
     }
 
