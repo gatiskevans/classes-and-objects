@@ -2,7 +2,7 @@
 
     class Application
     {
-        public VideoStore $store;
+        private VideoStore $store;
 
         public function __construct(VideoStore $store){
             $this->store = $store;
@@ -63,7 +63,7 @@
             $prompt = readline("Choose a movie to leave the rating. ");
             switch($prompt){
                 case 0:
-                case $prompt < count($this->store->movies):
+                case $prompt < count($this->store->getMovies()):
                     $this->store->leaveRating($prompt);
                     break;
                 default:
@@ -73,10 +73,14 @@
     }
 
     class VideoStore {
-        public array $movies = [];
+        private array $movies = [];
 
         public function __construct(Video $video){
             $this->movies[] = $video;
+        }
+
+        public function getMovies(): array {
+            return $this->movies;
         }
 
         public function addVideo(string $title): void {
@@ -85,7 +89,7 @@
 
         public function checkoutByTitle(int $titleIndex): void {
             foreach($this->movies as $index => $movie){
-                if($movie->checkout === true && $index === $titleIndex) {
+                if($movie->getCheckout() === true && $index === $titleIndex) {
                     echo "You cannot rent this movie. It's already taken\n";
                 } else if ($index === $titleIndex) $movie->checkout();
             }
@@ -93,7 +97,7 @@
 
         public function returnVideo(int $titleIndex): void {
             foreach($this->movies as $index => $movie){
-                if($movie->checkout === false && $index === $titleIndex){
+                if($movie->getCheckout() === false && $index === $titleIndex){
                     echo "This movie is already in the store!\n";
                 } else if($index === $titleIndex) $movie->returnVideo();
             }
@@ -102,15 +106,15 @@
         public function listInventory(): string {
             $listOfMovies = '';
             foreach($this->movies as $index => $movie){
-                $movie->checkout ? $checkout = "Available: \e[31mNo\e[0m" : $checkout = "Available: \e[32mYes\e[0m";
-                $listOfMovies .= "$index | \e[32m$movie->title\e[0m $checkout Rating: {$movie->getAverageRatings()} ";
+                $movie->getCheckout() ? $checkout = "Available: \e[31mNo\e[0m" : $checkout = "Available: \e[32mYes\e[0m";
+                $listOfMovies .= "$index | \e[32m{$movie->getTitle()}\e[0m $checkout Rating: {$movie->getAverageRatings()} ";
                 $listOfMovies .= "Positive ratings: {$movie->positiveRatings()}\n";
             }
             return $listOfMovies;
         }
 
         public function leaveRating(int $movieIndex): void {
-            echo "Movie title: {$this->movies[$movieIndex]->title}\n";
+            echo "Movie title: {$this->movies[$movieIndex]->getTitle()}\n";
             echo "Average rating: {$this->movies[$movieIndex]->getAverageRatings()}\n";
             $rating = readline("Leave a rating for this movie (0-10): ");
             if($rating > 10 || $rating < 0) {
@@ -123,13 +127,21 @@
     }
 
     class Video {
-        public string $title;
-        public bool $checkout;
-        public array $averageRatings = [];
+        private string $title;
+        private bool $checkout;
+        private array $averageRatings = [];
 
         public function __construct(string $title, bool $checkout){
             $this->title = $title;
             $this->checkout = $checkout;
+        }
+
+        public function getTitle(): string {
+            return $this->title;
+        }
+
+        public function getCheckout(): bool {
+            return $this->checkout;
         }
 
         public function checkOut(): bool {
