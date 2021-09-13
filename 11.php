@@ -1,28 +1,34 @@
 <?php
 
-    class Account {
+    class Account
+    {
 
         private string $name;
         private int $balance;
 
-        public function __construct(string $name, int $balance){
+        public function __construct(string $name, int $balance)
+        {
             $this->name = $name;
             $this->balance = $balance;
         }
 
-        public function getName(): string {
+        public function getName(): string
+        {
             return $this->name;
         }
 
-        public function getBalance(): int {
+        public function getBalance(): int
+        {
             return $this->balance;
         }
 
-        public function deposit(int $deposit) {
+        public function deposit(int $deposit): void
+        {
             $this->balance += $deposit;
         }
 
-        public function withdraw(int $withdraw) {
+        public function withdraw(int $withdraw): void
+        {
             $this->balance -= $withdraw;
         }
 

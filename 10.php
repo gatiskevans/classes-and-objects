@@ -4,11 +4,13 @@
     {
         private VideoStore $store;
 
-        public function __construct(VideoStore $store){
+        public function __construct(VideoStore $store)
+        {
             $this->store = $store;
         }
 
-        public function run(): void {
+        public function run(): void
+        {
             while (true) {
                 echo "Choose the operation you want to perform \n";
                 echo "Choose 0 for EXIT\n";
@@ -41,24 +43,28 @@
             }
         }
 
-        private function add_movies(): void {
+        private function add_movies(): void
+        {
             $movie = readline("Enter the movie to add to the list: ");
             if(trim($movie) !== "") $this->store->addVideo($movie);
         }
 
-        private function rent_video(): void {
+        private function rent_video(): void
+        {
             echo $this->store->listInventory();
             $movie = readline("Choose a movie to rent: ");
             if(is_numeric($movie)) $this->store->checkoutByTitle($movie);
         }
 
-        private function return_video(): void {
+        private function return_video(): void
+        {
             echo $this->store->listInventory();
             $movie = readline("Choose a movie to return: ");
             if(is_numeric($movie)) $this->store->returnVideo($movie);
         }
 
-        private function list_inventory(): void {
+        private function list_inventory(): void
+        {
             echo $this->store->listInventory();
             $prompt = readline("Choose a movie to leave the rating. ");
             switch($prompt){
@@ -72,22 +78,27 @@
         }
     }
 
-    class VideoStore {
+    class VideoStore
+    {
         private array $movies = [];
 
-        public function __construct(Video $video){
+        public function __construct(Video $video)
+        {
             $this->movies[] = $video;
         }
 
-        public function getMovies(): array {
+        public function getMovies(): array
+        {
             return $this->movies;
         }
 
-        public function addVideo(string $title): void {
+        public function addVideo(string $title): void
+        {
             $this->movies[] = new Video($title, false);
         }
 
-        public function checkoutByTitle(int $titleIndex): void {
+        public function checkoutByTitle(int $titleIndex): void
+        {
             foreach($this->movies as $index => $movie){
                 if($movie->getCheckout() === true && $index === $titleIndex) {
                     echo "You cannot rent this movie. It's already taken\n";
@@ -95,7 +106,8 @@
             }
         }
 
-        public function returnVideo(int $titleIndex): void {
+        public function returnVideo(int $titleIndex): void
+        {
             foreach($this->movies as $index => $movie){
                 if($movie->getCheckout() === false && $index === $titleIndex){
                     echo "This movie is already in the store!\n";
@@ -103,7 +115,8 @@
             }
         }
 
-        public function listInventory(): string {
+        public function listInventory(): string
+        {
             $listOfMovies = '';
             foreach($this->movies as $index => $movie){
                 $movie->getCheckout() ? $checkout = "Available: \e[31mNo\e[0m" : $checkout = "Available: \e[32mYes\e[0m";
@@ -113,7 +126,8 @@
             return $listOfMovies;
         }
 
-        public function leaveRating(int $movieIndex): void {
+        public function leaveRating(int $movieIndex): void
+        {
             echo "Movie title: {$this->movies[$movieIndex]->getTitle()}\n";
             echo "Average rating: {$this->movies[$movieIndex]->getAverageRatings()}\n";
             $rating = readline("Leave a rating for this movie (0-10): ");
@@ -126,44 +140,53 @@
 
     }
 
-    class Video {
+    class Video
+    {
         private string $title;
         private bool $checkout;
         private array $averageRatings = [];
 
-        public function __construct(string $title, bool $checkout){
+        public function __construct(string $title, bool $checkout)
+        {
             $this->title = $title;
             $this->checkout = $checkout;
         }
 
-        public function getTitle(): string {
+        public function getTitle(): string
+        {
             return $this->title;
         }
 
-        public function getCheckout(): bool {
+        public function getCheckout(): bool
+        {
             return $this->checkout;
         }
 
-        public function checkOut(): bool {
+        public function checkOut(): bool
+        {
             return $this->checkout = true;
         }
 
-        public function returnVideo(): bool {
+        public function returnVideo(): bool
+        {
             return $this->checkout = false;
         }
 
-        public function receiveRating(int $input): void {
+        public function receiveRating(int $input): void
+        {
             $this->averageRatings[] = $input;
         }
 
-        public function positiveRatings(): string {
+        public function positiveRatings(): string
+        {
             if(!$this->averageRatings) return "\e[33mNo Rating\e[0m";
             $percents = number_format(array_sum($this->averageRatings)*10 / count($this->averageRatings), 2);
             if($percents > 50) return "\e[32m$percents%\e[0m";
             return "\e[31m$percents%\e[0m";
         }
 
-        public function getAverageRatings(): int {
+        public function getAverageRatings(): int
+        {
             if(!$this->averageRatings) return 0;
             return array_sum($this->averageRatings) / count($this->averageRatings);
         }
