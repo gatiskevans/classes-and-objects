@@ -26,16 +26,16 @@
                         echo "Bye!";
                         die;
                     case 1:
-                        $this->add_movies();
+                        $this->addMovies();
                         break;
                     case 2:
-                        $this->rent_video();
+                        $this->rentVideo();
                         break;
                     case 3:
-                        $this->return_video();
+                        $this->returnVideo();
                         break;
                     case 4:
-                        $this->list_inventory();
+                        $this->listInventory();
                         break;
                     default:
                         echo "Sorry, I don't understand you..\n";
@@ -43,27 +43,27 @@
             }
         }
 
-        private function add_movies(): void
+        private function addMovies(): void
         {
             $movie = readline("Enter the movie to add to the list: ");
             if(trim($movie) !== "") $this->store->addVideo($movie);
         }
 
-        private function rent_video(): void
+        private function rentVideo(): void
         {
             echo $this->store->listInventory();
             $movie = readline("Choose a movie to rent: ");
             if(is_numeric($movie)) $this->store->checkoutByTitle($movie);
         }
 
-        private function return_video(): void
+        private function returnVideo(): void
         {
             echo $this->store->listInventory();
             $movie = readline("Choose a movie to return: ");
             if(is_numeric($movie)) $this->store->returnVideo($movie);
         }
 
-        private function list_inventory(): void
+        private function listInventory(): void
         {
             echo $this->store->listInventory();
             $prompt = readline("Choose a movie to leave the rating. ");
